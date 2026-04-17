@@ -14,4 +14,4 @@ def students(request):
        return Response(serializer.data,status=status.HTTP_200_OK)
     elif request.method == "POST":
       students = Student.objects.all()
-      StudentSerializer.create(students,data= request.data)
+      StudentSerializer.create(data= request.data)
