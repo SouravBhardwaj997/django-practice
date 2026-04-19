@@ -19,7 +19,7 @@ def students(request):
       return Response(serializer.errors)
       
 
-@api_view(["GET","PUT"])
+@api_view(["GET","PUT","DELETE"])
 def studentDetail(request,student_id):
    print("student_id",student_id)
    print("request",request.data)
@@ -40,4 +40,7 @@ def studentDetail(request,student_id):
          return Response(student.data,status=status.HTTP_200_OK)
       else:
          return Response({"message":"Not Found"},status=status.HTTP_400_BAD_REQUEST)
+   elif request.method == "DELETE":
+      student = stu_queryset.delete()
+      return Response({"message":"Deleted"},status=status.HTTP_200_OK)
 
