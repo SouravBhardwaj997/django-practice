@@ -22,8 +22,6 @@ def students(request):
 
 @api_view(["GET","PUT","DELETE"])
 def studentDetail(request,student_id):
-   print("student_id",student_id)
-   print("request",request.data)
    try:
       stu_queryset=Student.objects.get(pk=student_id)
    except Student.DoesNotExist:
@@ -61,3 +59,22 @@ def teachers(request):
       return Response({"message":"Bad Request","error":added_teacher.error_messages},status=status.HTTP_400_BAD_REQUEST)
 
 
+
+@api_view(["PUT","DELETE","GET"])
+def teachers_details(request,teacher_id):
+   try:
+      query_set = Teacher.objects.get(pk=teacher_id)
+   except Teacher.DoesNotExist:
+      return Response({"message":"Teacher Does not exist"},status=status.HTTP_400_BAD_REQUEST)
+   if request.method == "GET":
+      teacher = TeacherSerializer(query_set)
+      return Response(teacher.data)
+   elif request.method == "PUT":
+      teacher = TeacherSerializer(query_set,data=request.data)
+      if teacher.is_valid():
+         teacher.save()
+         return Response(teacher.data,status=status.HTTP_200_OK)
+      return Response({"message":"Bad Request","errors":teacher.errors},status=status.HTTP_400_BAD_REQUEST)
+   elif request.method == "DELETE":
+      teacher = query_set.delete()
+      return Response({},status=status.HTTP_204_NO_CONTENT)
