@@ -3,10 +3,11 @@ from django.db import models
 # Create your models here.
 
 class Student(models.Model):
-    stu_id = models.CharField(max_length=10)
-    name=models.CharField(max_length=50)
-    dept= models.CharField(max_length=20)
-    
+    name=models.CharField(max_length=100)
+    email=models.CharField(max_length=100,unique=True)
+    age=models.IntegerField(max_length=100)
+    course=models.CharField(max_length=100)
+    created_at=models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
 
