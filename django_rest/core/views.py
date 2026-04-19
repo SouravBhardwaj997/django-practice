@@ -1,9 +1,10 @@
 
-from .models import Student
-from .serializer import StudentSerializer
+from .models import Student,Teacher
+from .serializer import StudentSerializer, TeacherSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
 # Create your views here.
 @api_view(["GET","POST"])
 def students(request):
@@ -43,4 +44,20 @@ def studentDetail(request,student_id):
    elif request.method == "DELETE":
       student = stu_queryset.delete()
       return Response({"message":"Deleted"},status=status.HTTP_200_OK)
+
+
+@api_view(["GET","POST"])
+def teachers(request):
+   if(request.method == "GET"):
+      teachers_queryset=Teacher.objects.all()
+      teachers = TeacherSerializer(teachers_queryset,many=True)
+      
+      return Response(teachers.data)
+   elif (request.method == "POST"):
+      added_teacher=TeacherSerializer(data=request.data)
+      if added_teacher.is_valid():
+         added_teacher.save()
+         return Response(added_teacher.data,status=status.HTTP_201_CREATED)
+      return Response({"message":"Bad Request","error":added_teacher.error_messages},status=status.HTTP_400_BAD_REQUEST)
+
 
