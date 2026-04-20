@@ -1,13 +1,13 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 
 class Student(models.Model):
     name=models.CharField(max_length=100)
     email=models.CharField(max_length=100,unique=True)
-    age=models.IntegerField(max_length=100)
+    age=models.IntegerField()
     course=models.CharField(max_length=100)
-    created_at=models.DateTimeField(auto_now_add=True)
+    created_at=models.DateTimeField(default=timezone.now())
     def __str__(self):
         return self.name
 
