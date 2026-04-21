@@ -2,7 +2,7 @@
 from .models import Student,Teacher
 from .serializer import StudentSerializer, TeacherSerializer
 from rest_framework import status
-from rest_framework.mixins import ListModelMixin,CreateModelMixin
+from rest_framework.mixins import ListModelMixin,CreateModelMixin, RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin
 from rest_framework.generics import GenericAPIView
 from django.http import Http404
 from rest_framework.response import Response
@@ -139,4 +139,12 @@ class Teachers(ListModelMixin,CreateModelMixin,GenericAPIView):
       return self.list(request)
    def post(self,request):
       return self.create(request)
+   
+
+class TeachersDetails(RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin,GenericAPIView):
+   queryset = Teacher.objects.all()
+   serializer_class = TeacherSerializer
+   lookup_field="id"
+   def get(self,request,id):
+      return self.retrieve(request)
 
