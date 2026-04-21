@@ -3,7 +3,7 @@ from .models import Student,Teacher
 from .serializer import StudentSerializer, TeacherSerializer
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,APIView
 
 # Create your views here.
 @api_view(["GET","POST"])
@@ -44,37 +44,50 @@ def studentDetail(request,student_id):
       return Response({"message":"Deleted"},status=status.HTTP_200_OK)
 
 
-@api_view(["GET","POST"])
-def teachers(request):
-   if(request.method == "GET"):
-      teachers_queryset=Teacher.objects.all()
-      teachers = TeacherSerializer(teachers_queryset,many=True)
+# @api_view(["GET","POST"])
+# def teachers(request):
+#    if(request.method == "GET"):
+#       teachers_queryset=Teacher.objects.all()
+#       teachers = TeacherSerializer(teachers_queryset,many=True)
       
-      return Response(teachers.data)
-   elif (request.method == "POST"):
-      added_teacher=TeacherSerializer(data=request.data)
-      if added_teacher.is_valid():
-         added_teacher.save()
-         return Response(added_teacher.data,status=status.HTTP_201_CREATED)
-      return Response({"message":"Bad Request","error":added_teacher.error_messages},status=status.HTTP_400_BAD_REQUEST)
+#       return Response(teachers.data)
+#    elif (request.method == "POST"):
+#       added_teacher=TeacherSerializer(data=request.data)
+#       if added_teacher.is_valid():
+#          added_teacher.save()
+#          return Response(added_teacher.data,status=status.HTTP_201_CREATED)
+#       return Response({"message":"Bad Request","error":added_teacher.error_messages},status=status.HTTP_400_BAD_REQUEST)
 
 
 
-@api_view(["PUT","DELETE","GET"])
-def teachers_details(request,teacher_id):
-   try:
-      query_set = Teacher.objects.get(pk=teacher_id)
-   except Teacher.DoesNotExist:
-      return Response({"message":"Teacher Does not exist"},status=status.HTTP_400_BAD_REQUEST)
-   if request.method == "GET":
-      teacher = TeacherSerializer(query_set)
-      return Response(teacher.data)
-   elif request.method == "PUT":
-      teacher = TeacherSerializer(query_set,data=request.data)
-      if teacher.is_valid():
-         teacher.save()
-         return Response(teacher.data,status=status.HTTP_200_OK)
-      return Response({"message":"Bad Request","errors":teacher.errors},status=status.HTTP_400_BAD_REQUEST)
-   elif request.method == "DELETE":
-      teacher = query_set.delete()
-      return Response({},status=status.HTTP_204_NO_CONTENT)
+# @api_view(["PUT","DELETE","GET"])
+# def teachers_details(request,teacher_id):
+#    try:
+#       query_set = Teacher.objects.get(pk=teacher_id)
+#    except Teacher.DoesNotExist:
+#       return Response({"message":"Teacher Does not exist"},status=status.HTTP_400_BAD_REQUEST)
+#    if request.method == "GET":
+#       teacher = TeacherSerializer(query_set)
+#       return Response(teacher.data)
+#    elif request.method == "PUT":
+#       teacher = TeacherSerializer(query_set,data=request.data)
+#       if teacher.is_valid():
+#          teacher.save()
+#          return Response(teacher.data,status=status.HTTP_200_OK)
+#       return Response({"message":"Bad Request","errors":teacher.errors},status=status.HTTP_400_BAD_REQUEST)
+#    elif request.method == "DELETE":
+#       teacher = query_set.delete()
+#       return Response({},status=status.HTTP_204_NO_CONTENT)
+
+
+class Teachers(APIView):
+   def list():
+      teachers = Teacher.objects.all()
+      serailizer=TeacherSerializer(teachers,many=True)
+      return Response(serailizer.data,status=status.HTTP_200_OK)
+   
+   def post(request):
+      pass
+
+class Teachers_details(APIView):
+   pass
