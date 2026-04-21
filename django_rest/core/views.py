@@ -81,13 +81,20 @@ def studentDetail(request,student_id):
 
 
 class Teachers(APIView):
-   def list():
+   def get(self,request):
       teachers = Teacher.objects.all()
       serailizer=TeacherSerializer(teachers,many=True)
       return Response(serailizer.data,status=status.HTTP_200_OK)
    
-   def post(request):
-      pass
+   def post(self,request):
+      serailizer=TeacherSerializer(data=request.data)
+      print("serailizer",serailizer)
+      if serailizer.is_valid():
+         serailizer.save()
+         return Response(serailizer.data,status=status.HTTP_201_CREATED)
+      return Response({"message":"Bad Request","errors":serailizer.errors})
+
+      
 
 class Teachers_details(APIView):
    pass
