@@ -2,6 +2,7 @@
 from .models import Student,Teacher
 from .serializer import StudentSerializer, TeacherSerializer
 from rest_framework import status
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,APIView
 
@@ -97,4 +98,26 @@ class Teachers(APIView):
       
 
 class Teachers_details(APIView):
-   pass
+   def get_object(self,pk):
+      try:
+         teacher=Teacher.objects.get(pk=pk)
+         # serializer = TeacherSerializer(teacher)
+         return teacher
+      except Teacher.DoesNotExist:
+         raise Http404
+      
+   def get(self,request,teacher_id):
+      teacher = self.get_object(teacher_id)
+      serializer = TeacherSerializer(teacher)
+      return Response(serializer.data)
+   
+   def put(self,request,teacher_id):
+      teacher = self.get_object(teacher_id)
+      print("teacher",teacher)
+      print("request.body",request.body)
+      serializer = TeacherSerializer(teacher,data=request.data)
+      print("serializer",serializer)
+      if (serializer.is_valid()):
+         serializer.save()
+         return Response(serializer.data,status=status.HTTP_200_OK)
+      return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
