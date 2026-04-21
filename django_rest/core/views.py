@@ -151,5 +151,8 @@ class TeachersDetails(RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin,Gene
    def put(self,request,id):
       return self.update(request)
    
+   def delete(self,request,id):
+      return self.destroy(request)
+   
    
 
