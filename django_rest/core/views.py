@@ -147,4 +147,9 @@ class TeachersDetails(RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin,Gene
    lookup_field="id"
    def get(self,request,id):
       return self.retrieve(request)
+   
+   def put(self,request,id):
+      return self.update(request)
+   
+   
 
