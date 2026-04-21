@@ -137,5 +137,6 @@ class Teachers(ListModelMixin,CreateModelMixin,GenericAPIView):
    serializer_class = TeacherSerializer
    def get(self,request):
       return self.list(request)
-   
+   def post(self,request):
+      return self.create(request)
 
