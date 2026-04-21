@@ -144,15 +144,14 @@ class Teachers(ListModelMixin,CreateModelMixin,GenericAPIView):
 class TeachersDetails(RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin,GenericAPIView):
    queryset = Teacher.objects.all()
    serializer_class = TeacherSerializer
-   lookup_field="id"
-   def get(self,request,id):
-      return self.retrieve(request)
+   def get(self,request,pk):
+      return self.retrieve(request,pk)
    
-   def put(self,request,id):
-      return self.update(request)
+   def put(self,request,pk):
+      return self.update(request,pk)
    
-   def delete(self,request,id):
-      return self.destroy(request)
+   def delete(self,request,pk):
+      return self.destroy(request,pk)
    
    
 
