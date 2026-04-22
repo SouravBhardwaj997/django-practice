@@ -4,6 +4,7 @@ from .serializer import StudentSerializer, TeacherSerializer
 from rest_framework import status
 from rest_framework.mixins import ListModelMixin,CreateModelMixin, RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin
 from rest_framework.generics import GenericAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,APIView
@@ -132,26 +133,35 @@ def studentDetail(request,student_id):
 #       serializer = teacher.delete()
 #       return Response(status=status.HTTP_204_NO_CONTENT)
 
-class Teachers(ListModelMixin,CreateModelMixin,GenericAPIView):
-   queryset = Teacher.objects.all()
-   serializer_class = TeacherSerializer
-   def get(self,request):
-      return self.list(request)
-   def post(self,request):
-      return self.create(request)
+# class Teachers(ListModelMixin,CreateModelMixin,GenericAPIView):
+#    queryset = Teacher.objects.all()
+#    serializer_class = TeacherSerializer
+#    def get(self,request):
+#       return self.list(request)
+#    def post(self,request):
+#       return self.create(request)
    
 
-class TeachersDetails(RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin,GenericAPIView):
+# class TeachersDetails(RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin,GenericAPIView):
+#    queryset = Teacher.objects.all()
+#    serializer_class = TeacherSerializer
+#    def get(self,request,pk):
+#       return self.retrieve(request,pk)
+   
+#    def put(self,request,pk):
+#       return self.update(request,pk)
+   
+#    def delete(self,request,pk):
+#       return self.destroy(request,pk)
+   
+   
+class Teachers(ListCreateAPIView):
    queryset = Teacher.objects.all()
    serializer_class = TeacherSerializer
-   def get(self,request,pk):
-      return self.retrieve(request,pk)
-   
-   def put(self,request,pk):
-      return self.update(request,pk)
-   
-   def delete(self,request,pk):
-      return self.destroy(request,pk)
-   
-   
+
+
+class TeacherDetail(RetrieveUpdateDestroyAPIView):
+   queryset = Teacher.objects.all()
+   serializer_class = TeacherSerializer
+   lookup_field = "pk"
 
