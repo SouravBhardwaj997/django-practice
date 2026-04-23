@@ -162,7 +162,6 @@ class Teachers(ListCreateAPIView):
 
 class TeacherDetail(RetrieveUpdateDestroyAPIView):
    queryset = Teacher.objects.all()
-   print("queryset",queryset)
    serializer_class = TeacherSerializer
    lookup_field = "pk"
 
